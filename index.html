@@ -1,0 +1,1884 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Barão da Pizzaria</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #111;
+            color: white;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        /* CABEÇALHO */
+        header {
+            background: #b30000;
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        header h1 {
+            font-size: 38px;
+        }
+
+        header p {
+            margin-top: 8px;
+        }
+
+        /* MENU */
+        nav {
+            background: #1c1c1c;
+            padding: 15px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 0 15px;
+        }
+
+        /* CONTEÚDO */
+        main {
+            max-width: 1100px;
+            margin: auto;
+            padding: 35px 20px;
+        }
+
+        .titulo {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .titulo h2 {
+            color: #ffcc00;
+        }
+
+        .titulo p {
+            color: #aaa;
+            margin-top: 8px;
+        }
+
+        /* CARDÁPIO */
+        .cardapio {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .pizza {
+            background: #1d1d1d;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .pizza img {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+        }
+
+        .pizza-info {
+            padding: 18px;
+        }
+
+        .pizza-info h3 {
+            color: #ffcc00;
+            margin-bottom: 8px;
+        }
+
+        .pizza-info p {
+            color: #bbb;
+            line-height: 1.5;
+        }
+
+        .preco {
+            display: block;
+            color: #2ecc71;
+            font-weight: bold;
+            font-size: 18px;
+            margin: 15px 0;
+        }
+
+        /* BOTÕES */
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 7px;
+            background: #e63900;
+            color: white;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background: #ff4d00;
+        }
+
+        /* CARRINHO */
+        #carrinho {
+            margin-top: 45px;
+            background: #1c1c1c;
+            padding: 25px;
+            border-radius: 12px;
+        }
+
+        .item-carrinho {
+            padding: 15px 0;
+            border-bottom: 1px solid #444;
+            line-height: 1.7;
+        }
+
+        .total {
+            color: #2ecc71;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: right;
+            margin: 20px 0;
+        }
+
+        .btn-remover {
+            width: auto;
+            background: #900;
+            padding: 8px 12px;
+        }
+
+        /* MODAIS */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .modal-conteudo {
+            width: 92%;
+            max-width: 600px;
+            margin: 30px auto;
+            background: #1d1d1d;
+            padding: 25px;
+            border-radius: 12px;
+        }
+
+        .fechar {
+            float: right;
+            border: none;
+            background: none;
+            color: white;
+            font-size: 30px;
+        }
+
+        /* FORMULÁRIOS */
+        .grupo {
+            margin: 20px 0;
+        }
+
+        .grupo h3 {
+            color: #ffcc00;
+            margin-bottom: 10px;
+        }
+
+        .grupo label {
+            display: block;
+            background: #292929;
+            padding: 10px;
+            margin: 6px 0;
+            border-radius: 7px;
+        }
+
+        input[type="text"],
+        input[type="tel"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            background: #333;
+            border: 1px solid #555;
+            border-radius: 6px;
+            color: white;
+        }
+
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .preco-montagem {
+            color: #2ecc71;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        /* RODAPÉ */
+        footer {
+            background: #080808;
+            color: #888;
+            text-align: center;
+            padding: 25px;
+            margin-top: 40px;
+        }
+
+        /* CELULAR */
+        @media (max-width: 600px) {
+
+            header h1 {
+                font-size: 30px;
+            }
+
+            nav a {
+                font-size: 14px;
+                margin: 0 7px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- CABEÇALHO -->
+
+    <header>
+
+        <h1>🍕 Barão da Pizzaria</h1>
+
+        <p>Sabor que conquista!</p>
+
+    </header>
+
+
+    <!-- MENU -->
+
+    <nav>
+
+        <a href="#cardapio">
+            🍕 Cardápio
+        </a>
+
+        <a href="#carrinho">
+            🛒 Carrinho
+        </a>
+
+    </nav>
+
+
+    <!-- CONTEÚDO -->
+
+    <main>
+
+        <!-- CARDÁPIO -->
+
+        <section id="cardapio">
+
+            <div class="titulo">
+
+                <h2>
+                    Nosso Cardápio
+                </h2>
+
+                <p>
+                    Escolha sua pizza favorita
+                </p>
+
+            </div>
+
+
+            <div class="cardapio">
+
+                <!-- CALABRESA -->
+
+                <article class="pizza">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1579751626657-72bc17010498?auto=format&fit=crop&w=800&q=80"
+                        alt="Pizza de Calabresa">
+
+                    <div class="pizza-info">
+
+                        <h3>
+                            Calabresa
+                        </h3>
+
+                        <p>
+                            Mussarela, calabresa,
+                            cebola e orégano.
+                        </p>
+
+                        <span class="preco">
+                            A partir de R$ 39,90
+                        </span>
+
+                        <button
+                            class="btn"
+                            onclick="abrirMontagem('Calabresa')">
+
+                            🍕 Montar Pizza
+
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <!-- FRANGO -->
+
+                <article class="pizza">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=800&q=80"
+                        alt="Pizza de Frango com Catupiry">
+
+                    <div class="pizza-info">
+
+                        <h3>
+                            Frango com Catupiry
+                        </h3>
+
+                        <p>
+                            Frango desfiado,
+                            mussarela e catupiry.
+                        </p>
+
+                        <span class="preco">
+                            A partir de R$ 44,90
+                        </span>
+
+                        <button
+                            class="btn"
+                            onclick="abrirMontagem('Frango com Catupiry')">
+
+                            🍕 Montar Pizza
+
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <!-- PORTUGUESA -->
+
+                <article class="pizza">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?auto=format&fit=crop&w=800&q=80"
+                        alt="Pizza Portuguesa">
+
+                    <div class="pizza-info">
+
+                        <h3>
+                            Portuguesa
+                        </h3>
+
+                        <p>
+                            Presunto, mussarela,
+                            ovo, cebola e azeitona.
+                        </p>
+
+                        <span class="preco">
+                            A partir de R$ 46,90
+                        </span>
+
+                        <button
+                            class="btn"
+                            onclick="abrirMontagem('Portuguesa')">
+
+                            🍕 Montar Pizza
+
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <!-- 4 QUEIJOS -->
+
+                <article class="pizza">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=800&q=80"
+                        alt="Pizza 4 Queijos">
+
+                    <div class="pizza-info">
+
+                        <h3>
+                            4 Queijos
+                        </h3>
+
+                        <p>
+                            Mussarela, provolone,
+                            parmesão e catupiry.
+                        </p>
+
+                        <span class="preco">
+                            A partir de R$ 49,90
+                        </span>
+
+                        <button
+                            class="btn"
+                            onclick="abrirMontagem('4 Queijos')">
+
+                            🍕 Montar Pizza
+
+                        </button>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- CARRINHO -->
+
+        <section id="carrinho">
+
+            <div class="titulo">
+
+                <h2>
+                    🛒 Seu Carrinho
+                </h2>
+
+            </div>
+
+
+            <div id="listaCarrinho">
+
+                <p>
+                    Seu carrinho está vazio.
+                </p>
+
+            </div>
+
+
+            <div class="total">
+
+                Total:
+                R$ <span id="total">0,00</span>
+
+            </div>
+
+
+            <button
+                class="btn"
+                onclick="abrirCheckout()">
+
+                Finalizar Pedido
+
+            </button>
+
+        </section>
+
+    </main>
+
+
+    <!-- MODAL DA PIZZA -->
+
+    <div
+        id="modalPizza"
+        class="modal">
+
+        <div class="modal-conteudo">
+
+            <button
+                class="fechar"
+                onclick="fecharModal()">
+
+                &times;
+
+            </button>
+
+
+            <h2>
+                🍕 Monte sua Pizza
+            </h2>
+
+
+            <h3 id="pizzaEscolhida">
+                Pizza
+            </h3>
+
+
+            <!-- TAMANHO -->
+
+            <div class="grupo">
+
+                <h3>
+                    📏 Tamanho
+                </h3>
+
+
+                <label>
+
+                    <input
+                        type="radio"
+                        name="tamanho"
+                        value="Pequena"
+                        data-preco="29.90">
+
+                    Pequena — R$ 29,90
+
+                </label>
+
+
+                <label>
+
+                    <input
+                        type="radio"
+                        name="tamanho"
+                        value="Média"
+                        data-preco="39.90"
+                        checked>
+
+                    Média — R$ 39,90
+
+                </label>
+
+
+                <label>
+
+                    <input
+                        type="radio"
+                        name="tamanho"
+                        value="Grande"
+                        data-preco="49.90">
+
+                    Grande — R$ 49,90
+
+                </label>
+
+
+                <label>
+
+                    <input
+                        type="radio"
+                        name="tamanho"
+                        value="Família"
+                        data-preco="59.90">
+
+                    Família — R$ 59,90
+
+                </label>
+
+            </div>
+
+
+            <!-- TIPO -->
+
+            <div class="grupo">
+
+                <h3>
+                    🍕 Tipo
+                </h3>
+
+
+                <label>
+
+                    <input
+                        type="radio"
+                        name="tipoPizza"
+                        value="Inteira"
+                        checked>
+
+                    Pizza inteira
+
+                </label>
+
+
+                <label>
+
+                    <input
+                        type="radio"
+                        name="tipoPizza"
+                        value="Meia">
+
+                    Pizza meia / meia
+
+                </label>
+
+            </div>
+
+
+            <!-- SEGUNDA METADE -->
+
+            <div
+                id="segundaPizza"
+                class="grupo"
+                style="display: none;">
+
+                <h3>
+                    🍕 Segunda metade
+                </h3>
+
+
+                <select id="sabor2">
+
+                    <option>
+                        Calabresa
+                    </option>
+
+                    <option>
+                        Frango com Catupiry
+                    </option>
+
+                    <option>
+                        Portuguesa
+                    </option>
+
+                    <option>
+                        4 Queijos
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- BORDA -->
+
+            <div class="grupo">
+
+                <h3>
+                    🧀 Borda
+                </h3>
+
+
+                <label>
+
+                    <input
+                        type="radio"
+                        name="borda"
+                        value="Sem borda"
+                        data-preco="0"
+                        checked>
+
+                    Sem borda — Grátis
+
+                </label>
+
+
+                <label>
+
+                    <input
+                        type="radio"
+                        name="borda"
+                        value="Catupiry"
+                        data-preco="7">
+
+                    Catupiry — + R$ 7,00
+
+                </label>
+
+
+                <label>
+
+                    <input
+                        type="radio"
+                        name="borda"
+                        value="Cheddar"
+                        data-preco="7">
+
+                    Cheddar — + R$ 7,00
+
+                </label>
+
+
+                <label>
+
+                    <input
+                        type="radio"
+                        name="borda"
+                        value="Chocolate"
+                        data-preco="9">
+
+                    Chocolate — + R$ 9,00
+
+                </label>
+
+            </div>
+
+
+            <!-- ADICIONAIS -->
+
+            <div class="grupo">
+
+                <h3>
+                    ➕ Adicionais
+                </h3>
+
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        value="Bacon"
+                        data-preco="5">
+
+                    Bacon — + R$ 5,00
+
+                </label>
+
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        value="Queijo extra"
+                        data-preco="4">
+
+                    Queijo extra — + R$ 4,00
+
+                </label>
+
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        value="Calabresa extra"
+                        data-preco="5">
+
+                    Calabresa extra — + R$ 5,00
+
+                </label>
+
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        value="Frango extra"
+                        data-preco="5">
+
+                    Frango extra — + R$ 5,00
+
+                </label>
+
+            </div>
+
+
+            <!-- QUANTIDADE -->
+
+            <div class="grupo">
+
+                <h3>
+                    🔢 Quantidade
+                </h3>
+
+
+                <input
+                    type="number"
+                    id="quantidade"
+                    value="1"
+                    min="1"
+                    max="10">
+
+            </div>
+
+
+            <div class="preco-montagem">
+
+                Total:
+                R$ <span id="precoMontagem">39,90</span>
+
+            </div>
+
+
+            <button
+                class="btn"
+                onclick="adicionarAoCarrinho()">
+
+                🛒 Adicionar ao Carrinho
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- CHECKOUT -->
+
+    <div
+        id="modalCheckout"
+        class="modal">
+
+        <div class="modal-conteudo">
+
+            <button
+                class="fechar"
+                onclick="fecharCheckout()">
+
+                &times;
+
+            </button>
+
+
+            <h2>
+                🧾 Finalizar Pedido
+            </h2>
+
+
+            <div
+                id="resumoPedido"
+                class="grupo">
+            </div>
+
+
+            <!-- CLIENTE -->
+
+            <div class="grupo">
+
+                <h3>
+                    👤 Dados do cliente
+                </h3>
+
+
+                <label>
+
+                    Nome
+
+                    <input
+                        type="text"
+                        id="nomeCliente"
+                        placeholder="Seu nome">
+
+                </label>
+
+
+                <label>
+
+                    Telefone
+
+                    <input
+                        type="tel"
+                        id="telefoneCliente"
+                        placeholder="(85) 99999-9999">
+
+                </label>
+
+            </div>
+
+
+            <!-- ENDEREÇO -->
+
+            <div class="grupo">
+
+                <h3>
+                    📍 Endereço
+                </h3>
+
+
+                <label>
+
+                    Rua
+
+                    <input
+                        type="text"
+                        id="ruaCliente">
+
+                </label>
+
+
+                <label>
+
+                    Número
+
+                    <input
+                        type="text"
+                        id="numeroCliente">
+
+                </label>
+
+
+                <label>
+
+                    Bairro
+
+                    <input
+                        type="text"
+                        id="bairroCliente">
+
+                </label>
+
+
+                <label>
+
+                    Complemento
+
+                    <input
+                        type="text"
+                        id="complementoCliente">
+
+                </label>
+
+            </div>
+
+
+            <!-- PAGAMENTO -->
+
+            <div class="grupo">
+
+                <h3>
+                    💳 Pagamento
+                </h3>
+
+
+                <label>
+
+                    <input
+                        type="radio"
+                        name="pagamento"
+                        value="Pix"
+                        checked>
+
+                    Pix
+
+                </label>
+
+
+                <label>
+
+                    <input
+                        type="radio"
+                        name="pagamento"
+                        value="Cartão">
+
+                    Cartão
+
+                </label>
+
+
+                <label>
+
+                    <input
+                        type="radio"
+                        name="pagamento"
+                        value="Dinheiro">
+
+                    Dinheiro
+
+                </label>
+
+            </div>
+
+
+            <!-- OBSERVAÇÃO -->
+
+            <div class="grupo">
+
+                <h3>
+                    📝 Observação
+                </h3>
+
+
+                <textarea
+                    id="observacao"
+                    placeholder="Alguma observação?">
+                </textarea>
+
+            </div>
+
+
+            <div
+                id="totalCheckout"
+                class="preco-montagem">
+            </div>
+
+
+            <button
+                class="btn"
+                onclick="enviarPedidoWhatsApp()">
+
+                📱 Enviar Pedido pelo WhatsApp
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- RODAPÉ -->
+
+    <footer>
+
+        <p>
+            © 2026 Barão da Pizzaria
+        </p>
+
+        <p>
+            🍕 Sabor que conquista!
+        </p>
+
+    </footer>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script>
+
+        /* =====================================
+           CONFIGURAÇÃO DO WHATSAPP
+        ===================================== */
+
+        const NUMERO_WHATSAPP = "5585992732247";
+
+
+        /* =====================================
+           VARIÁVEIS
+        ===================================== */
+
+        let carrinho = [];
+
+        let pizzaAtual = "";
+
+
+        /* =====================================
+           ABRIR MONTAGEM
+        ===================================== */
+
+        function abrirMontagem(nomePizza) {
+
+            pizzaAtual = nomePizza;
+
+            document.getElementById(
+                "pizzaEscolhida"
+            ).textContent = nomePizza;
+
+            document.getElementById(
+                "modalPizza"
+            ).style.display = "block";
+
+            atualizarPreco();
+        }
+
+
+        /* =====================================
+           FECHAR MODAL
+        ===================================== */
+
+        function fecharModal() {
+
+            document.getElementById(
+                "modalPizza"
+            ).style.display = "none";
+        }
+
+
+        /* =====================================
+           CALCULAR PREÇO
+        ===================================== */
+
+        function calcularPreco() {
+
+            const tamanho =
+                document.querySelector(
+                    'input[name="tamanho"]:checked'
+                );
+
+            const borda =
+                document.querySelector(
+                    'input[name="borda"]:checked'
+                );
+
+            const quantidade =
+                Number(
+                    document.getElementById(
+                        "quantidade"
+                    ).value
+                ) || 1;
+
+
+            let preco =
+                Number(tamanho.dataset.preco);
+
+
+            preco +=
+                Number(borda.dataset.preco);
+
+
+            const adicionais =
+                document.querySelectorAll(
+                    '#modalPizza input[type="checkbox"]:checked'
+                );
+
+
+            adicionais.forEach(function (item) {
+
+                preco +=
+                    Number(item.dataset.preco);
+
+            });
+
+
+            return preco * quantidade;
+        }
+
+
+        /* =====================================
+           ATUALIZAR PREÇO
+        ===================================== */
+
+        function atualizarPreco() {
+
+            const preco =
+                calcularPreco();
+
+            document.getElementById(
+                "precoMontagem"
+            ).textContent =
+                preco
+                    .toFixed(2)
+                    .replace(".", ",");
+        }
+
+
+        /* =====================================
+           MEIA / MEIA
+        ===================================== */
+
+        document
+            .querySelectorAll(
+                'input[name="tipoPizza"]'
+            )
+            .forEach(function (radio) {
+
+                radio.addEventListener(
+                    "change",
+                    function () {
+
+                        const segunda =
+                            document.getElementById(
+                                "segundaPizza"
+                            );
+
+
+                        if (
+                            this.value === "Meia"
+                        ) {
+
+                            segunda.style.display =
+                                "block";
+
+                        } else {
+
+                            segunda.style.display =
+                                "none";
+                        }
+
+                    }
+                );
+
+            });
+
+
+        /* =====================================
+           ATUALIZA PREÇO
+        ===================================== */
+
+        document.addEventListener(
+            "change",
+            function (event) {
+
+                if (
+                    event.target.matches(
+                        'input[type="radio"], input[type="checkbox"]'
+                    )
+                ) {
+
+                    atualizarPreco();
+                }
+
+            }
+        );
+
+
+        document
+            .getElementById("quantidade")
+            .addEventListener(
+                "input",
+                atualizarPreco
+            );
+
+
+        /* =====================================
+           ADICIONAR AO CARRINHO
+        ===================================== */
+
+        function adicionarAoCarrinho() {
+
+            const tamanho =
+                document.querySelector(
+                    'input[name="tamanho"]:checked'
+                );
+
+            const tipo =
+                document.querySelector(
+                    'input[name="tipoPizza"]:checked'
+                );
+
+            const borda =
+                document.querySelector(
+                    'input[name="borda"]:checked'
+                );
+
+
+            const quantidade =
+                Number(
+                    document.getElementById(
+                        "quantidade"
+                    ).value
+                ) || 1;
+
+
+            let segundaPizza = "";
+
+
+            if (
+                tipo.value === "Meia"
+            ) {
+
+                segundaPizza =
+                    document.getElementById(
+                        "sabor2"
+                    ).value;
+            }
+
+
+            const adicionais = [];
+
+
+            document
+                .querySelectorAll(
+                    '#modalPizza input[type="checkbox"]:checked'
+                )
+                .forEach(function (item) {
+
+                    adicionais.push(
+                        item.value
+                    );
+
+                });
+
+
+            const pizza = {
+
+                nome: pizzaAtual,
+
+                tamanho:
+                    tamanho.value,
+
+                tipo:
+                    tipo.value,
+
+                segundaPizza:
+                    segundaPizza,
+
+                borda:
+                    borda.value,
+
+                adicionais:
+                    adicionais,
+
+                quantidade:
+                    quantidade,
+
+                preco:
+                    calcularPreco()
+            };
+
+
+            carrinho.push(pizza);
+
+            fecharModal();
+
+            atualizarCarrinho();
+        }
+
+
+        /* =====================================
+           ATUALIZAR CARRINHO
+        ===================================== */
+
+        function atualizarCarrinho() {
+
+            const lista =
+                document.getElementById(
+                    "listaCarrinho"
+                );
+
+
+            lista.innerHTML = "";
+
+
+            if (
+                carrinho.length === 0
+            ) {
+
+                lista.innerHTML =
+                    "<p>Seu carrinho está vazio.</p>";
+
+                document.getElementById(
+                    "total"
+                ).textContent = "0,00";
+
+                return;
+            }
+
+
+            let total = 0;
+
+
+            carrinho.forEach(
+                function (item, index) {
+
+                    total +=
+                        item.preco;
+
+
+                    let detalhes = "";
+
+                    detalhes +=
+                        `Tamanho: ${item.tamanho}<br>`;
+
+                    detalhes +=
+                        `Tipo: ${item.tipo}<br>`;
+
+
+                    if (
+                        item.segundaPizza
+                    ) {
+
+                        detalhes +=
+                            `Segunda metade: ${item.segundaPizza}<br>`;
+                    }
+
+
+                    detalhes +=
+                        `Borda: ${item.borda}<br>`;
+
+
+                    if (
+                        item.adicionais.length > 0
+                    ) {
+
+                        detalhes +=
+                            `Adicionais: ${item.adicionais.join(", ")}<br>`;
+                    }
+
+
+                    detalhes +=
+                        `Quantidade: ${item.quantidade}<br>`;
+
+
+                    lista.innerHTML += `
+
+                        <div class="item-carrinho">
+
+                            <strong>
+                                🍕 ${item.nome}
+                            </strong>
+
+                            <br>
+
+                            ${detalhes}
+
+                            <strong>
+                                R$ ${item.preco
+                                    .toFixed(2)
+                                    .replace(".", ",")}
+                            </strong>
+
+                            <br><br>
+
+                            <button
+                                class="btn-remover"
+                                onclick="removerDoCarrinho(${index})">
+
+                                ❌ Remover
+
+                            </button>
+
+                        </div>
+
+                    `;
+                }
+            );
+
+
+            document.getElementById(
+                "total"
+            ).textContent =
+                total
+                    .toFixed(2)
+                    .replace(".", ",");
+        }
+
+
+        /* =====================================
+           REMOVER
+        ===================================== */
+
+        function removerDoCarrinho(index) {
+
+            carrinho.splice(
+                index,
+                1
+            );
+
+            atualizarCarrinho();
+        }
+
+
+        /* =====================================
+           CHECKOUT
+        ===================================== */
+
+        function abrirCheckout() {
+
+            if (
+                carrinho.length === 0
+            ) {
+
+                alert(
+                    "Adicione uma pizza ao carrinho."
+                );
+
+                return;
+            }
+
+
+            atualizarResumo();
+
+            document.getElementById(
+                "modalCheckout"
+            ).style.display = "block";
+        }
+
+
+        function fecharCheckout() {
+
+            document.getElementById(
+                "modalCheckout"
+            ).style.display = "none";
+        }
+
+
+        /* =====================================
+           RESUMO
+        ===================================== */
+
+        function atualizarResumo() {
+
+            let subtotal = 0;
+
+            let html =
+                "<h3>🛒 Resumo do pedido</h3>";
+
+
+            carrinho.forEach(
+                function (item) {
+
+                    subtotal +=
+                        item.preco;
+
+
+                    html += `
+
+                        <p>
+                            ${item.quantidade}x
+                            ${item.nome}
+                            —
+                            R$ ${item.preco
+                                .toFixed(2)
+                                .replace(".", ",")}
+                        </p>
+
+                    `;
+                }
+            );
+
+
+            const taxaEntrega = 5;
+
+            const total =
+                subtotal +
+                taxaEntrega;
+
+
+            document.getElementById(
+                "resumoPedido"
+            ).innerHTML =
+                html;
+
+
+            document.getElementById(
+                "totalCheckout"
+            ).innerHTML = `
+
+                Subtotal:
+                R$ ${subtotal
+                    .toFixed(2)
+                    .replace(".", ",")}
+
+                <br>
+
+                Entrega:
+                R$ ${taxaEntrega
+                    .toFixed(2)
+                    .replace(".", ",")}
+
+                <br>
+
+                <strong>
+                    Total:
+                    R$ ${total
+                        .toFixed(2)
+                        .replace(".", ",")}
+                </strong>
+
+            `;
+        }
+
+
+        /* =====================================
+           ENVIAR PEDIDO PELO WHATSAPP
+        ===================================== */
+
+        function enviarPedidoWhatsApp() {
+
+            if (
+                carrinho.length === 0
+            ) {
+
+                alert(
+                    "Seu carrinho está vazio."
+                );
+
+                return;
+            }
+
+
+            const nome =
+                document
+                    .getElementById(
+                        "nomeCliente"
+                    )
+                    .value
+                    .trim();
+
+
+            const telefone =
+                document
+                    .getElementById(
+                        "telefoneCliente"
+                    )
+                    .value
+                    .trim();
+
+
+            const rua =
+                document
+                    .getElementById(
+                        "ruaCliente"
+                    )
+                    .value
+                    .trim();
+
+
+            const numero =
+                document
+                    .getElementById(
+                        "numeroCliente"
+                    )
+                    .value
+                    .trim();
+
+
+            const bairro =
+                document
+                    .getElementById(
+                        "bairroCliente"
+                    )
+                    .value
+                    .trim();
+
+
+            const complemento =
+                document
+                    .getElementById(
+                        "complementoCliente"
+                    )
+                    .value
+                    .trim();
+
+
+            const observacao =
+                document
+                    .getElementById(
+                        "observacao"
+                    )
+                    .value
+                    .trim();
+
+
+            const pagamentoSelecionado =
+                document.querySelector(
+                    'input[name="pagamento"]:checked'
+                );
+
+
+            if (!pagamentoSelecionado) {
+
+                alert(
+                    "Selecione uma forma de pagamento."
+                );
+
+                return;
+            }
+
+
+            const pagamento =
+                pagamentoSelecionado.value;
+
+
+            if (
+                !nome ||
+                !telefone ||
+                !rua ||
+                !numero ||
+                !bairro
+            ) {
+
+                alert(
+                    "Preencha nome, telefone, rua, número e bairro."
+                );
+
+                return;
+            }
+
+
+            /* =================================
+               MENSAGEM DO WHATSAPP
+            ================================= */
+
+            let subtotal = 0;
+
+
+            let mensagem =
+`🍕 *BARÃO DA PIZZARIA*
+━━━━━━━━━━━━━━━━━━━━
+
+🧾 *NOVO PEDIDO*
+
+👤 *DADOS DO CLIENTE*
+Nome: ${nome}
+Telefone: ${telefone}
+
+📍 *ENDEREÇO DE ENTREGA*
+${rua}, nº ${numero}
+Bairro: ${bairro}`;
+
+
+            if (complemento) {
+
+                mensagem += `
+Complemento: ${complemento}`;
+            }
+
+
+            mensagem += `
+
+━━━━━━━━━━━━━━━━━━━━
+🍕 *ITENS DO PEDIDO*
+`;
+
+
+            /* =================================
+               ITENS
+            ================================= */
+
+            carrinho.forEach(
+                function (item, index) {
+
+                    subtotal +=
+                        item.preco;
+
+
+                    mensagem += `
+
+🍕 *PIZZA ${index + 1}*
+• Sabor: ${item.nome}
+• Tamanho: ${item.tamanho}
+• Tipo: ${item.tipo}`;
+
+
+                    if (
+                        item.segundaPizza
+                    ) {
+
+                        mensagem += `
+• Segunda metade: ${item.segundaPizza}`;
+                    }
+
+
+                    mensagem += `
+• Borda: ${item.borda}`;
+
+
+                    if (
+                        item.adicionais.length > 0
+                    ) {
+
+                        mensagem += `
+• Adicionais: ${item.adicionais.join(", ")}`;
+                    }
+
+
+                    mensagem += `
+• Quantidade: ${item.quantidade}
+• Valor: R$ ${item.preco
+                        .toFixed(2)
+                        .replace(".", ",")}
+`;
+                }
+            );
+
+
+            /* =================================
+               VALORES
+            ================================= */
+
+            const taxaEntrega = 5;
+
+            const total =
+                subtotal +
+                taxaEntrega;
+
+
+            mensagem += `
+━━━━━━━━━━━━━━━━━━━━
+💰 *RESUMO DO PAGAMENTO*
+
+Subtotal: R$ ${subtotal
+                .toFixed(2)
+                .replace(".", ",")}
+
+Taxa de entrega: R$ ${taxaEntrega
+                .toFixed(2)
+                .replace(".", ",")}
+
+💵 *TOTAL DO PEDIDO: R$ ${total
+                .toFixed(2)
+                .replace(".", ",")}*
+
+💳 Forma de pagamento: *${pagamento}*`;
+
+
+            /* =================================
+               OBSERVAÇÃO
+            ================================= */
+
+            if (
+                observacao
+            ) {
+
+                mensagem += `
+
+📝 *OBSERVAÇÃO DO CLIENTE*
+${observacao}`;
+            }
+
+
+            /* =================================
+               FINAL
+            ================================= */
+
+            mensagem += `
+
+━━━━━━━━━━━━━━━━━━━━
+✅ *PEDIDO PRONTO PARA PRODUÇÃO*
+🍕 Barão da Pizzaria`;
+
+
+            /* =================================
+               ABRIR WHATSAPP
+            ================================= */
+
+            const link =
+                `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(mensagem)}`;
+
+
+            window.open(
+                link,
+                "_blank"
+            );
+        }
+
+
+        /* =====================================
+           FECHAR MODAIS
+        ===================================== */
+
+        window.addEventListener(
+            "click",
+            function (event) {
+
+                const modalPizza =
+                    document.getElementById(
+                        "modalPizza"
+                    );
+
+                const modalCheckout =
+                    document.getElementById(
+                        "modalCheckout"
+                    );
+
+
+                if (
+                    event.target === modalPizza
+                ) {
+
+                    fecharModal();
+                }
+
+
+                if (
+                    event.target === modalCheckout
+                ) {
+
+                    fecharCheckout();
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>
